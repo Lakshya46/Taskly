@@ -1,10 +1,12 @@
-
-import "../styles/Login.css"; // Reuse the professional login styles
+import "../styles/Login.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Signup() {
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -32,21 +34,18 @@ export default function Signup() {
     try {
       setLoading(true);
       setError("");
-      
+
       const res = await API.post("/auth/register", {
         name: form.name,
         email: form.email,
         password: form.password,
       });
 
-     
       if (res.data.token) {
         localStorage.setItem("token", res.data.token);
-        window.location.href = "/dashboard";
+        navigate("/dashboard");   // ✅ SPA navigation
       } else {
-      
-        alert("Account created! Please login.");
-        window.location.href = "/";
+        navigate("/");            // ✅ SPA navigation
       }
     } catch (err) {
       setError(err.response?.data?.message || "Registration failed");
@@ -120,7 +119,10 @@ export default function Signup() {
         </button>
 
         <p className="auth-footer">
-          Already have an account? <a href="/">Login</a>
+          Already have an account?{" "}
+          <span onClick={() => navigate("/")} className="link">
+            Login
+          </span>
         </p>
       </form>
     </div>

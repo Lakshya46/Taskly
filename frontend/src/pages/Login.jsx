@@ -1,10 +1,12 @@
 import "../styles/Login.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../services/api";
+import { FaEyeSlash, FaEye } from "react-icons/fa";
 
-import { FaEyeSlash } from "react-icons/fa";
-import { FaEye } from "react-icons/fa";
 export default function Login() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -18,7 +20,8 @@ export default function Login() {
       setError("");
       const res = await API.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
-      window.location.href = "/dashboard";
+
+      navigate("/dashboard"); 
     } catch (err) {
       setError("Invalid email or password");
     } finally {
@@ -42,7 +45,6 @@ export default function Login() {
           required
         />
 
-        {/* Password with icon */}
         <div className="password-wrapper">
           <input
             type={showPassword ? "text" : "password"}
@@ -51,12 +53,11 @@ export default function Login() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-
           <span
             className="password-icon"
             onClick={() => setShowPassword(!showPassword)}
           >
-            {showPassword ? <FaEyeSlash /> : <FaEye /> }
+            {showPassword ? <FaEyeSlash /> : <FaEye />}
           </span>
         </div>
 
@@ -65,7 +66,10 @@ export default function Login() {
         </button>
 
         <p className="auth-footer">
-          Don’t have an account? <a href="/signup">Sign up</a>
+          Don’t have an account?{" "}
+          <span onClick={() => navigate("/signup")} className="link">
+            Sign up
+          </span>
         </p>
       </form>
     </div>
