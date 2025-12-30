@@ -124,3 +124,15 @@
 .auth-footer a:hover {
   text-decoration: underline;
 }
+
+.link {
+  color: #2563eb;          /* Blue highlight */
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: #1e40af;          /* Darker blue on hover */
+  text-decoration: underline;
+}
